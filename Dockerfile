@@ -5,9 +5,11 @@ COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 RUN gem install bundler
 RUN bundle install
+RUN gem install pg
+RUN bundle exec rails db:prepare
+RUN bundle exec rails s
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
-RUN bundle exec rails s
 CMD ["rails", "server", "-b", "0.0.0.0"]
